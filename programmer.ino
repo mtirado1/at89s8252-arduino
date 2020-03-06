@@ -54,7 +54,6 @@ void setup() {
 }
 
 void loop() {
-
   if (Serial.available() > 0) {
     pgm_instruction = Serial.read();
     switch (pgm_instruction) {
@@ -64,13 +63,16 @@ void loop() {
       break;
 
       case 0x51: // Write to code memory
+        while(Serial.available() < 3);
         pgm_address = Serial.read() << 8;
         pgm_address |= Serial.read();
         pgm_data = Serial.read();
         writeCode(pgm_address, pgm_data);
+        
       break;
 
       case 0x52: // Read from code memory
+        while(Serial.available() < 2);
         pgm_address = Serial.read() << 8;
         pgm_address |= Serial.read();
         Serial.println(readCode(pgm_address), HEX);
