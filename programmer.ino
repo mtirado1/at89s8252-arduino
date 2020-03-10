@@ -12,6 +12,9 @@
 
 #include <SPI.h>
 
+#define MOSIPin 11
+#define MISOPin 12
+#define SCKPin 13
 #define RSTPin 9
 
 unsigned char pgm_instruction = 0;
@@ -58,6 +61,8 @@ void loop() {
     pgm_instruction = Serial.read();
     switch (pgm_instruction) {
       case 0x50: // Programming enable
+        SPI.begin();
+		pinMode(RSTPin, OUTPUT);
         progEnable();
         Serial.println("Programming mode enabled.");
       break;
@@ -81,6 +86,12 @@ void loop() {
       case 0x40: // End programming
       digitalWrite(RSTPin, LOW);
       Serial.println("Programming mode disabled.");
+      // Set outputs to inputs (high impedance mode)
+      SPI.end();
+      pinMode(MOSIPin, INPUT);
+      pinMode(MISOPin, INPUT);
+      pinMode(SCKPin, INPUT);
+      pinMode(RSTPin, INPUT);
       break;
     }
   }
