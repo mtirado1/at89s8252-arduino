@@ -27,8 +27,8 @@ with serial.Serial(p, 9600) as ser:
         time.sleep(0.05)
     ser.readline()
    
-    a = input('Programming done. Do you wish to verify? Y/n: ')
-    if  a == 'Y':
+    a = input('Programming done. Do you wish to verify? y/n: ')
+    if  a == 'Y' or a == 'y':
         print('Verifying...')
         err = False
         for i in range(0, len(ih.addresses())):
