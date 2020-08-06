@@ -31,3 +31,5 @@ python3 -m pip install pyserial intelhex
 Edit `programmer.py` to change the path to the hex file and select the serial port.
 
 Program the microcontroller by running the script.
+
+If you want erase the chip run `eraser.py`
