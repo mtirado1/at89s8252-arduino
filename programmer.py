@@ -3,9 +3,10 @@ import time
 from intelhex import IntelHex
 
 # Path to hex file
-f = 'test/aaa.hex'
+f = 'blink/blinky.hex'
 # Serial port name
-p = '/dev/ttyACM0'
+#p = '/dev/ttyACM0'
+p = 'COM5'
 
 # Read hex file
 ih = IntelHex()
@@ -26,7 +27,7 @@ with serial.Serial(p, 9600) as ser:
         ser.write(bytes([ih[addr]]))  # data byte
         time.sleep(0.05)
     ser.readline()
-   
+
     a = input('Programming done. Do you wish to verify? y/n: ')
     if  a == 'Y' or a == 'y':
         print('Verifying...')
@@ -43,7 +44,6 @@ with serial.Serial(p, 9600) as ser:
                 err = True
         if not err:
             print('Verification complete.')
-    
+
     ser.write(b'\x40') # End programming
     print('Done.')
-

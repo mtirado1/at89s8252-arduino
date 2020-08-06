@@ -45,10 +45,16 @@ unsigned char readCode(unsigned int addr) {
   return SPI.transfer(0x00);
 }
 
+void eraseChip() {
+  SPI.transfer(0xac);
+  SPI.transfer(0x04);
+  SPI.transfer(0x00);
+}
+
 void setup() {
   Serial.begin(9600);
   SPI.setBitOrder (MSBFIRST);
-  SPI.setClockDivider(SPI_CLOCK_DIV64);
+  SPI.setClockDivider(SPI_CLOCK_DIV128);
   SPI.begin();
 
   pinMode(RSTPin, OUTPUT);
@@ -81,6 +87,11 @@ void loop() {
         pgm_address = Serial.read() << 8;
         pgm_address |= Serial.read();
         Serial.println(readCode(pgm_address), HEX);
+      break;
+
+      case 0x53: // Erase chip
+        eraseChip();
+        Serial.println("Chip erased.");
       break;
 
       case 0x40: // End programming
