@@ -49,6 +49,7 @@ void eraseChip() {
   SPI.transfer(0xac);
   SPI.transfer(0x04);
   SPI.transfer(0x00);
+  delay(5);
 }
 
 void setup() {
