@@ -15,10 +15,11 @@ ih.fromfile(f, format='hex')
 
 with serial.Serial(p, 9600) as ser:
     time.sleep(2)
-    print(ser.readline())
+    print(ser.readline().decode('utf-8'))
     ser.write(b'\x50') # Enable programming
     ih.dump()
     print('Programming...')
+    print(ser.readline().decode('utf-8'))
     for i in range(0, len(ih.addresses())):
         addr = ih.addresses()[i]
         ser.write(b'\x51')
@@ -26,7 +27,7 @@ with serial.Serial(p, 9600) as ser:
         ser.write(bytes([addr%256]))  # low address byte
         ser.write(bytes([ih[addr]]))  # data byte
         time.sleep(0.05)
-    ser.readline()
+
 
     a = input('Programming done. Do you wish to verify? y/n: ')
     if  a == 'Y' or a == 'y':
@@ -46,4 +47,5 @@ with serial.Serial(p, 9600) as ser:
             print('Verification complete.')
 
     ser.write(b'\x40') # End programming
+    print(ser.readline().decode('utf-8'))
     print('Done.')
