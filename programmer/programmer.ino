@@ -3,19 +3,29 @@
 
 // Arduino Pin Connections
 
+// Signature read code tested but don't work
+// P3_6: pin 8
+// P3_7: pin 9
+
+// RST:  pin 10
 // MOSI: pin 11
 // MISO: pin 12
 // SCK:  pin 13
-// RST:  pin 9
+
 
 
 
 #include <SPI.h>
 
+// Signature read code tested but don't work
+//#define P3_6Pin 8
+//#define P3_7Pin 9
+
+#define RSTPin 10
 #define MOSIPin 11
 #define MISOPin 12
 #define SCKPin 13
-#define RSTPin 9
+
 
 unsigned char pgm_instruction = 0;
 unsigned int pgm_address = 0;
@@ -29,6 +39,19 @@ void progEnable() {
   SPI.transfer(0x53);
   SPI.transfer(0x00);
 }
+
+// Signature read code tested but don't work
+//void signature(bool doit) {
+//  if (doit) {
+//    pinMode(P3_6Pin, OUTPUT);
+//    pinMode(P3_7Pin, OUTPUT);
+//    digitalWrite(P3_6Pin, LOW);
+//    digitalWrite(P3_7Pin, LOW);
+//  } else {
+//    pinMode(P3_6Pin, INPUT);
+//    pinMode(P3_7Pin, INPUT);
+//  }
+//}
 
 // Write to code memory
 void writeCode(unsigned int addr, unsigned char data) {
@@ -80,7 +103,7 @@ void loop() {
         pgm_address |= Serial.read();
         pgm_data = Serial.read();
         writeCode(pgm_address, pgm_data);
-        
+        Serial.println('0');
       break;
 
       case 0x52: // Read from code memory
@@ -94,7 +117,16 @@ void loop() {
         eraseChip();
         Serial.println("Chip erased.");
       break;
-
+      
+// Signature read code tested but don't work
+//      case 0x54: // Read signature
+//        signature(true);
+//        Serial.println(readCode(0x30), HEX);
+//        Serial.println(readCode(0x31), HEX);   
+//        signature(false);
+//        Serial.println("Signature checked.");
+//      break;
+      
       case 0x40: // End programming
       digitalWrite(RSTPin, LOW);
       Serial.println("Programming mode disabled.");
