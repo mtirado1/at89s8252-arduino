@@ -3,19 +3,21 @@
 
 // Arduino Pin Connections
 
+// RST:  pin 9
 // MOSI: pin 11
 // MISO: pin 12
 // SCK:  pin 13
-// RST:  pin 9
+
 
 
 
 #include <SPI.h>
 
+#define RSTPin 9
 #define MOSIPin 11
 #define MISOPin 12
 #define SCKPin 13
-#define RSTPin 9
+
 
 unsigned char pgm_instruction = 0;
 unsigned int pgm_address = 0;
@@ -45,10 +47,32 @@ unsigned char readCode(unsigned int addr) {
   return SPI.transfer(0x00);
 }
 
+// Write to code memory
+void writeData(unsigned int addr, unsigned char data) {
+  SPI.transfer(((addr & 0xff00) >> 5) + 0x06);
+  SPI.transfer(addr & 0x00ff);
+  SPI.transfer(data);
+  delay(5);
+}
+
+// Read from data memory
+unsigned char readData(unsigned int addr) {
+  SPI.transfer(((addr & 0xff00) >> 5) + 0x05);
+  SPI.transfer(addr & 0x00ff);
+  return SPI.transfer(0x00);
+}
+
+void eraseChip() {
+  SPI.transfer(0xac);
+  SPI.transfer(0x04);
+  SPI.transfer(0x00);
+  delay(5);
+}
+
 void setup() {
   Serial.begin(9600);
   SPI.setBitOrder (MSBFIRST);
-  SPI.setClockDivider(SPI_CLOCK_DIV64);
+  SPI.setClockDivider(SPI_CLOCK_DIV128);
   SPI.begin();
 
   pinMode(RSTPin, OUTPUT);
@@ -73,7 +97,7 @@ void loop() {
         pgm_address |= Serial.read();
         pgm_data = Serial.read();
         writeCode(pgm_address, pgm_data);
-        
+        Serial.println('0');
       break;
 
       case 0x52: // Read from code memory
@@ -83,6 +107,27 @@ void loop() {
         Serial.println(readCode(pgm_address), HEX);
       break;
 
+      case 0x53: // Erase chip
+        eraseChip();
+        Serial.println("Chip erased.");
+      break;
+
+      case 0x54: // Read from code memory
+        while(Serial.available() < 2);
+        pgm_address = Serial.read() << 8;
+        pgm_address |= Serial.read();
+        Serial.println(readData(pgm_address), HEX);
+      break;
+
+       case 0x55: // Write to code memory
+        while(Serial.available() < 3);
+        pgm_address = Serial.read() << 8;
+        pgm_address |= Serial.read();
+        pgm_data = Serial.read();
+        writeData(pgm_address, pgm_data);
+        Serial.println('0');
+      break;
+      
       case 0x40: // End programming
       digitalWrite(RSTPin, LOW);
       Serial.println("Programming mode disabled.");
