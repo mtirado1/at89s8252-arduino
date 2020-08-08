@@ -6,7 +6,7 @@ from intelhex import IntelHex
 f = 'blink/blinky.hex'
 # Serial port name
 #p = '/dev/ttyACM0'
-p = 'COM5'
+p = 'COM8'
 
 # Read hex file
 ih = IntelHex()
@@ -59,7 +59,7 @@ with serial.Serial(p, 9600) as ser:
                 print('Error at address' + hex(addr))
                 print('Got %d, was %d' % (k, ih[addr]))
                 err = True
-                
+
     if not err:
         print('Verification complete.')
 
