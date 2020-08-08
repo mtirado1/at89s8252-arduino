@@ -3,11 +3,7 @@
 
 // Arduino Pin Connections
 
-// Signature read code tested but don't work
-// P3_6: pin 8
-// P3_7: pin 9
-
-// RST:  pin 10
+// RST:  pin 9
 // MOSI: pin 11
 // MISO: pin 12
 // SCK:  pin 13
@@ -17,11 +13,7 @@
 
 #include <SPI.h>
 
-// Signature read code tested but don't work
-//#define P3_6Pin 8
-//#define P3_7Pin 9
-
-#define RSTPin 10
+#define RSTPin 9
 #define MOSIPin 11
 #define MISOPin 12
 #define SCKPin 13
@@ -40,19 +32,6 @@ void progEnable() {
   SPI.transfer(0x00);
 }
 
-// Signature read code tested but don't work
-//void signature(bool doit) {
-//  if (doit) {
-//    pinMode(P3_6Pin, OUTPUT);
-//    pinMode(P3_7Pin, OUTPUT);
-//    digitalWrite(P3_6Pin, LOW);
-//    digitalWrite(P3_7Pin, LOW);
-//  } else {
-//    pinMode(P3_6Pin, INPUT);
-//    pinMode(P3_7Pin, INPUT);
-//  }
-//}
-
 // Write to code memory
 void writeCode(unsigned int addr, unsigned char data) {
   SPI.transfer(((addr & 0xff00) >> 5) + 0x02);
@@ -64,6 +43,21 @@ void writeCode(unsigned int addr, unsigned char data) {
 // Read from code memory
 unsigned char readCode(unsigned int addr) {
   SPI.transfer(((addr & 0xff00) >> 5) + 0x01);
+  SPI.transfer(addr & 0x00ff);
+  return SPI.transfer(0x00);
+}
+
+// Write to code memory
+void writeData(unsigned int addr, unsigned char data) {
+  SPI.transfer(((addr & 0xff00) >> 5) + 0x06);
+  SPI.transfer(addr & 0x00ff);
+  SPI.transfer(data);
+  delay(5);
+}
+
+// Read from data memory
+unsigned char readData(unsigned int addr) {
+  SPI.transfer(((addr & 0xff00) >> 5) + 0x05);
   SPI.transfer(addr & 0x00ff);
   return SPI.transfer(0x00);
 }
@@ -117,15 +111,22 @@ void loop() {
         eraseChip();
         Serial.println("Chip erased.");
       break;
-      
-// Signature read code tested but don't work
-//      case 0x54: // Read signature
-//        signature(true);
-//        Serial.println(readCode(0x30), HEX);
-//        Serial.println(readCode(0x31), HEX);   
-//        signature(false);
-//        Serial.println("Signature checked.");
-//      break;
+
+      case 0x54: // Read from code memory
+        while(Serial.available() < 2);
+        pgm_address = Serial.read() << 8;
+        pgm_address |= Serial.read();
+        Serial.println(readData(pgm_address), HEX);
+      break;
+
+       case 0x55: // Write to code memory
+        while(Serial.available() < 3);
+        pgm_address = Serial.read() << 8;
+        pgm_address |= Serial.read();
+        pgm_data = Serial.read();
+        writeData(pgm_address, pgm_data);
+        Serial.println('0');
+      break;
       
       case 0x40: // End programming
       digitalWrite(RSTPin, LOW);

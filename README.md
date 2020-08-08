@@ -13,7 +13,7 @@ Connect the target microcontroller to VCC and GND, and add a crystal between XTA
 
 | AT89S8252     | Arduino |
 |---------------|---------|
-| RESET (Pin 9) | Pin 10   |
+| RESET (Pin 9) | Pin 9   |
 | MOSI  (Pin 6) | Pin 11  |
 | MISO  (Pin 7) | Pin 12  |
 | SCK (Pin 8)   | Pin 13  |
@@ -28,14 +28,24 @@ python3 -m pip install pyserial intelhex
 
 # Usage
 
-Edit `programmer.py` to change the path to the hex file and select the serial port.
+Edit `writeprogram.py` to change the path to the hex file and select the serial port.
+
+In the blink directory there is blinky.hex that is a sample program.
 
 Program the microcontroller by running the script.
 
-If you want erase the chip run `eraser.py`
+If you want erase the chip run `eraser.py` it erase both program and data space.
 
-If you want dump the chip run `reader.py`
+If you want dump the program on chip run `readprogram.py`
 
-If you want check the chip from a file run `verify.py`
+If you want check the chip program from a file run `verifyprogram.py`
 
 Edit scripts for changing file hex names and comm port settings.
+
+The same is for data space with:
+
+writedata.py
+
+readdata.py
+
+verifydata.py

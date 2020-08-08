@@ -3,7 +3,7 @@ import time
 
 # Serial port name
 #p = '/dev/ttyACM0'
-p = 'COM5'
+p = 'COM8'
 
 with serial.Serial(p, 9600) as ser:
     time.sleep(2)
