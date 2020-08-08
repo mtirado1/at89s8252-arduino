@@ -1,13 +1,12 @@
 import serial
 import time
 from intelhex import IntelHex
+from config import *
 
 # Path to hex file
-f = 'blink/datadump.hex'
-
+f = data_dumpFile
 # Serial port name
-#p = '/dev/ttyACM0'
-p = 'COM8'
+p = serialPort
 
 # Read hex file
 ih = IntelHex()
