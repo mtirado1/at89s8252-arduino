@@ -34,18 +34,14 @@ In the blink directory there is blinky.hex that is a sample program.
 
 Program the microcontroller by running the script.
 
-If you want erase the chip run `eraser.py` it erase both program and data space.
-
-If you want dump the program on chip run `readprogram.py`
-
-If you want check the chip program from a file run `verifyprogram.py`
+* If you want erase the chip run `eraser.py` it erase both program and data space.
+* If you want dump the program on chip run `readprogram.py`
+* If you want check the chip program from a file run `verifyprogram.py`
 
 Edit scripts for changing file hex names and comm port settings.
 
-The same is for data space with:
+You can also write, read, and verify data space with:
 
-writedata.py
-
-readdata.py
-
-verifydata.py
+* writedata.py
+* readdata.py
+* verifydata.py
