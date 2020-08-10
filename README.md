@@ -32,7 +32,7 @@ Edit `config.py` to change the serial port and target/dump hex files.
 
 In the blink directory there is `blinky.hex` that can be used as a sample program.
 
-Program the microcontroller by running the script.
+Program the microcontroller by running the script `writeprogram.py`.
 
 * If you want erase the chip run `eraser.py` it erase both program and data space.
 * If you want dump the program on chip run `readprogram.py`
