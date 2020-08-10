@@ -1,9 +1,9 @@
 import serial
 import time
+from config import *
 
 # Serial port name
-#p = '/dev/ttyACM0'
-p = 'COM8'
+p = serialPort
 
 with serial.Serial(p, 9600) as ser:
     time.sleep(2)

@@ -28,24 +28,18 @@ python3 -m pip install pyserial intelhex
 
 # Usage
 
-Edit `writeprogram.py` to change the path to the hex file and select the serial port.
+Edit `config.py` to change the serial port and target/dump hex files.
 
-In the blink directory there is blinky.hex that is a sample program.
+In the blink directory there is `blinky.hex` that can be used as a sample program.
 
 Program the microcontroller by running the script.
 
-If you want erase the chip run `eraser.py` it erase both program and data space.
+* If you want erase the chip run `eraser.py` it erase both program and data space.
+* If you want dump the program on chip run `readprogram.py`
+* If you want check the chip program from a file run `verifyprogram.py`
 
-If you want dump the program on chip run `readprogram.py`
+You can also write, read, and verify data space with:
 
-If you want check the chip program from a file run `verifyprogram.py`
-
-Edit scripts for changing file hex names and comm port settings.
-
-The same is for data space with:
-
-writedata.py
-
-readdata.py
-
-verifydata.py
+* writedata.py
+* readdata.py
+* verifydata.py

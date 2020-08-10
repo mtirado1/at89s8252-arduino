@@ -72,6 +72,8 @@ void eraseChip() {
 void setup() {
   Serial.begin(9600);
   SPI.setBitOrder (MSBFIRST);
+  // According to the AT89S8252 datasheet, The maximum serial clock (SCK) frequency
+  //should be less than 1/40 of the crystal frequency (of the chip to be programmed).
   SPI.setClockDivider(SPI_CLOCK_DIV128);
   SPI.begin();
 
