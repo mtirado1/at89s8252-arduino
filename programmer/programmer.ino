@@ -69,6 +69,19 @@ void eraseChip() {
   delay(5);
 }
 
+void writeLock(unsigned int lock) {
+  SPI.transfer(0xac);
+  if ( lock == 1 ) {
+    SPI.transfer(103 & 0x00ff);
+  } else if ( lock ==2 ) {
+    SPI.transfer(27 & 0x00ff);
+  } else {
+    SPI.transfer(7 & 0x00ff);
+  }
+  SPI.transfer(0x00);
+  delay(5);
+}
+
 void setup() {
   Serial.begin(9600);
   SPI.setBitOrder (MSBFIRST);
@@ -130,6 +143,12 @@ void loop() {
         Serial.println('0');
       break;
       
+      case 0x56: // Write lock
+        pgm_address = Serial.read();
+        writeLock(pgm_address);
+        Serial.println("Lock bits programmed.");
+      break;
+		    
       case 0x40: // End programming
       digitalWrite(RSTPin, LOW);
       Serial.println("Programming mode disabled.");
