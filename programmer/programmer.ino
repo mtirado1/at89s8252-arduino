@@ -37,7 +37,7 @@ void writeCode(unsigned int addr, unsigned char data) {
   SPI.transfer(((addr & 0xff00) >> 5) + 0x02);
   SPI.transfer(addr & 0x00ff);
   SPI.transfer(data);
-  delay(5);
+  //delay(5);
 }
 
 // Read from code memory
@@ -47,12 +47,12 @@ unsigned char readCode(unsigned int addr) {
   return SPI.transfer(0x00);
 }
 
-// Write to code memory
+// Write to data memory
 void writeData(unsigned int addr, unsigned char data) {
   SPI.transfer(((addr & 0xff00) >> 5) + 0x06);
   SPI.transfer(addr & 0x00ff);
   SPI.transfer(data);
-  delay(5);
+  //delay(5);
 }
 
 // Read from data memory
