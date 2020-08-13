@@ -47,6 +47,7 @@ if error == 1:
 
 # Serial port name
 p = serialPort
+print(p)
 
 with serial.Serial(p, 9600) as ser:
     time.sleep(2)
