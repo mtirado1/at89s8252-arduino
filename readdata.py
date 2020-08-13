@@ -5,8 +5,11 @@ from config import *
 
 # Path to hex file
 f = data_dumpFile
+print(f)
+
 # Serial port name
 p = serialPort
+print(p)
 
 # Read hex file
 ih = IntelHex()
